@@ -24,10 +24,10 @@
     <h2>Ingresa el sistema de ecuaciones:</h2>
     <form id="equationForm">
         <div>
-            Ecuación 1: <input type="text" id="eq1" placeholder="a1x + b1y = c1">
+            Ecuación 1: <input type="text" id="eq1" placeholder="a1x + b1y = c1" required>
         </div>
         <div>
-            Ecuación 2: <input type="text" id="eq2" placeholder="a2x + b2y = c2">
+            Ecuación 2: <input type="text" id="eq2" placeholder="a2x + b2y = c2" required>
         </div>
         <button type="submit">Resolver</button>
     </form>
@@ -64,7 +64,7 @@
             const matches = eq.replace(/\s/g, '').match(regex);
             if (matches) {
                 const a = parseInt(matches[1]) || 1;
-                const b = parseInt(matches[2]) || 1;
+                const b = parseInt(matches[2]) || (matches[2] === '-' ? -1 : 1);
                 const c = parseInt(matches[3]);
                 return [a, b, c];
             }
@@ -74,7 +74,7 @@
         function drawGraph(a1, b1, c1, a2, b2, c2) {
             const ctx = document.getElementById('graph').getContext('2d');
             const chartData = {
-                labels: [-10, -5, 0, 5, 10],
+                labels: Array.from({length: 21}, (_, i) => i - 10),
                 datasets: [
                     {
                         label: `Ecuación 1: ${a1}x + ${b1}y = ${c1}`,
