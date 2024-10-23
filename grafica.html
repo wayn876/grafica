@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Ecuaciones con Gráfica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #myChart {
+            max-width: 600px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Ecuaciones con Gráfica</h1>
+    <label for="equation">Introduce una ecuación (por ejemplo, y - 6 = 3x):</label>
+    <input type="text" id="equation" placeholder="Ejemplo: y - 6 = 3x" />
+
+    <button onclick="displayResults()">Mostrar resultados de y</button>
+
+    <h2>Resultados:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>x</th>
+                <th>y</th>
+            </tr>
+        </thead>
+        <tbody id="result"></tbody>
+    </table>
+
+    <canvas id="myChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function displayResults() {
+            const equation = document.getElementById("equation").value;
+            const resultElement = document.getElementById("result");
+            const xValues = [3, 2, 1, 0, -1, -2, -3]; // Rango de valores de x
+            resultElement.innerHTML = ""; // Limpiar resultados anteriores
+
+            let yValues = []; // Para almacenar los valores de y
+
+            try {
+                // Extraer la parte izquierda y derecha de la ecuación
+                const [leftSide, rightSide] = equation.split('=').map(part => part.trim());
+                
+                // Reemplazar implícitamente las multiplicaciones
+                const modifiedRightSide = rightSide.replace(/(\d)([a-z])/g, '$1*$2');
+
+                xValues.forEach(x => {
+                    // Resolver para y: y = rightSide + (parte izquierda)
+                    const rightExpression = modifiedRightSide.replace(/x/g, `(${x})`);
+                    const leftExpression = leftSide.replace(/y/g, '0').replace(/x/g, `(${x})`);
+
+                    const rightValue = eval(rightExpression);
+                    const leftValue = eval(leftExpression);
+
+                    const y = rightValue + leftValue;
+                    yValues.push(y); // Agregar el valor de y al arreglo
+                    resultElement.innerHTML += `<tr><td>${x}</td><td>${y}</td></tr>`;
+                });
+
+                // Dibujar la gráfica
+                drawChart(xValues, yValues);
+            } catch (error) {
+                resultElement.innerHTML = "Error en la ecuación. Asegúrate de que sea válida.";
+            }
+        }
+
+        function drawChart(xValues, yValues) {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        label: 'Valores de y',
+                        data: yValues,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        fill: false, // No llenar el área bajo la línea
+                        pointRadius: 5, // Tamaño de los puntos
+                        tension: 0.1 // Suavizar la línea
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Valores de x'
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.5)',
+                                lineWidth: 1,
+                                drawBorder: true
+                            },
+                            beginAtZero: true // Asegurarse de que el eje X comienza en 0
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valores de y'
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.5)',
+                                lineWidth: 1,
+                                drawBorder: true
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const x = context.label;
+                                    const y = context.raw;
+                                    return `x: ${x}, y: ${y}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Dibujar la cruz manualmente
+            const crossColor = 'rgba(255, 0, 0, 1)'; // Color de la cruz
+            ctx.save();
+            ctx.strokeStyle = crossColor;
+            ctx.beginPath();
+            ctx.moveTo(myChart.chartArea.left, myChart.chartArea.top + myChart.chartArea.height / 2);
+            ctx.lineTo(myChart.chartArea.left + myChart.chartArea.width, myChart.chartArea.top + myChart.chartArea.height / 2);
+            ctx.moveTo(myChart.chartArea.left + myChart.chartArea.width / 2, myChart.chartArea.top);
+            ctx.lineTo(myChart.chartArea.left + myChart.chartArea.width / 2, myChart.chartArea.top + myChart.chartArea.height);
+            ctx.stroke();
+            ctx.restore();
+        }
+    </script>
+</body>
+</html>
