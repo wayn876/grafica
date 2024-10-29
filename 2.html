@@ -16,6 +16,13 @@
             max-width: 600px;
             margin-top: 20px;
         }
+        .result-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -33,6 +40,7 @@
     </form>
     <h2>Resultado:</h2>
     <div id="result"></div>
+    <div id="valueAtZero" class="result-box"></div>
     <canvas id="graph"></canvas>
 
     <script>
@@ -56,6 +64,23 @@
 
             document.getElementById('result').innerText = `Solución: x = ${x.toFixed(2)}, y = ${y.toFixed(2)}`;
 
+            // Calcular y cuando x = 0 y x cuando y = 0
+            const yAtZeroX1 = (c1 - a1 * 0) / b1;
+            const xAtZeroY1 = (c1 - b1 * 0) / a1;
+            const yAtZeroX2 = (c2 - a2 * 0) / b2;
+            const xAtZeroY2 = (c2 - b2 * 0) / a2;
+
+            document.getElementById('valueAtZero').innerHTML = `
+                <strong>Valores en el eje:</strong><br>
+                Para Ecuación 1: <br>
+                - Cuando x = 0, y = ${yAtZeroX1.toFixed(2)} <br>
+                - Cuando y = 0, x = ${xAtZeroY1.toFixed(2)} <br>
+                <br>
+                Para Ecuación 2: <br>
+                - Cuando x = 0, y = ${yAtZeroX2.toFixed(2)} <br>
+                - Cuando y = 0, x = ${xAtZeroY2.toFixed(2)} <br>
+            `;
+
             drawGraph(a1, b1, c1, a2, b2, c2);
         });
 
@@ -68,6 +93,7 @@
                 const c = parseInt(matches[3]);
                 return [a, b, c];
             }
+            alert("Ecuación no válida. Asegúrate de seguir el formato 'ax + by = c'.");
             throw new Error("Ecuación no válida");
         }
 
