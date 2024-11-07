@@ -104,13 +104,11 @@
                 equation += ` + 0y`; // Si b es 0, mostramos "0y"
             }
 
-            // Mostrar el término constante c
+            // Mostrar el término constante c, pero sin mostrar "+ 0"
             if (c > 0) {
                 equation += ` + ${c}`;
             } else if (c < 0) {
                 equation += ` - ${Math.abs(c)}`;
-            } else {
-                equation += ` + 0`; // Si c es 0, mostramos "0"
             }
 
             // Mostrar el término del lado derecho de la ecuación
@@ -121,6 +119,9 @@
             } else {
                 equation += ` = 0`; // Si d es 0, mostramos "= 0"
             }
+
+            // Caso especial para que "1y" se muestre simplemente como "y" y "-1y" como "-y"
+            equation = equation.replace(/1y/g, "y").replace(/-1y/g, "-y");
 
             return equation;
         }
