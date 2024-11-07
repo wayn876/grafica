@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Ecuaciones Lineales</title>
+    <title>Generador de Ecuaciones Lineales Resolvibles</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,18 +31,24 @@
 </head>
 <body>
 
-    <h1>Generador de Ecuaciones Lineales</h1>
+    <h1>Generador de Ecuaciones Lineales Resolvibles</h1>
     <div id="equation">Haz clic en el botón para generar una ecuación</div>
     <button onclick="generateEquation()">Generar Ecuación</button>
 
     <script>
         function generateEquation() {
-            // Generar coeficientes aleatorios para a, b y c entre -10 y 10
-            let a = getRandomInt(-10, 10);
-            let b = getRandomInt(-10, 10);
-            let c = getRandomInt(-10, 10);
+            let a, b, c;
 
-            // Si a o b es cero, mostramos la incógnita correspondiente pero sin el término que sea cero
+            // Generamos los coeficientes a y b asegurándonos de que al menos uno sea diferente de 0
+            do {
+                a = getRandomInt(-10, 10);
+                b = getRandomInt(-10, 10);
+            } while (a === 0 && b === 0); // Si ambos son cero, generamos nuevamente.
+
+            // Generamos el valor de c, el cual puede ser cualquier número entero.
+            c = getRandomInt(-10, 10);
+
+            // Formamos la ecuación en formato "ax + by = c"
             let equation = '';
 
             // Siempre incluir "x" y "y" en la ecuación, pero sin mostrar 0x o 0y
