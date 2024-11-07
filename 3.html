@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Ecuaciones Lineales (No Despejadas)</title>
+    <title>Generador de Ecuaciones Lineales</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,48 +32,45 @@
 </head>
 <body>
 
-    <h1>Generador de Ecuaciones Lineales (No Despejadas)</h1>
+    <h1>Generador de Ecuaciones Lineales</h1>
     <div id="equation">Haz clic en el botón para generar una ecuación o un conjunto</div>
     <button onclick="generateEquation()">Generar una sola ecuación</button>
     <button onclick="generateSystem()">Generar un conjunto de ecuaciones</button>
 
     <script>
-        // Generar una sola ecuación lineal no despejada de la forma "ax + by + c = d"
+        // Generar una sola ecuación lineal en la forma a1x + b1y = c1
         function generateEquation() {
-            let a, b, c, d;
+            let a1, b1, c1;
 
-            // Generar coeficientes aleatorios para a, b, c y d entre -10 y 10
-            a = getRandomInt(-10, 10);
-            b = getRandomInt(-10, 10);
-            c = getRandomInt(-10, 10);
-            d = getRandomInt(-10, 10);
+            // Generar coeficientes aleatorios para a1, b1 y c1 entre -10 y 10
+            a1 = getRandomInt(-10, 10);
+            b1 = getRandomInt(-10, 10);
+            c1 = getRandomInt(-10, 10);
 
-            // Formar la ecuación en la forma ax + by + c = d
-            let equation = formatNonDespejada(a, b, c, d);
+            // Formar la ecuación en la forma a1x + b1y = c1
+            let equation = formatEquation(a1, b1, c1);
 
             // Mostrar la ecuación generada
             document.getElementById("equation").innerText = `Ecuación generada: ${equation}`;
         }
 
-        // Generar un conjunto de ecuaciones lineales no despejadas
+        // Generar un conjunto de ecuaciones lineales en la forma a1x + b1y = c1
         function generateSystem() {
-            let a1, b1, c1, d1, a2, b2, c2, d2;
+            let a1, b1, c1, a2, b2, c2;
 
             // Generar coeficientes para la primera ecuación
             a1 = getRandomInt(-10, 10);
             b1 = getRandomInt(-10, 10);
             c1 = getRandomInt(-10, 10);
-            d1 = getRandomInt(-10, 10);
 
             // Generar coeficientes para la segunda ecuación
             a2 = getRandomInt(-10, 10);
             b2 = getRandomInt(-10, 10);
             c2 = getRandomInt(-10, 10);
-            d2 = getRandomInt(-10, 10);
 
             // Formar las dos ecuaciones no despejadas
-            let equation1 = formatNonDespejada(a1, b1, c1, d1);
-            let equation2 = formatNonDespejada(a2, b2, c2, d2);
+            let equation1 = formatEquation(a1, b1, c1);
+            let equation2 = formatEquation(a2, b2, c2);
 
             // Mostrar las ecuaciones generadas
             document.getElementById("equation").innerHTML = `Conjunto de ecuaciones generadas:<br>${equation1} <br> ${equation2}`;
@@ -84,44 +81,34 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // Función para formatear la ecuación no despejada
-        function formatNonDespejada(a, b, c, d) {
+        // Función para formatear la ecuación en la forma a1x + b1y = c1
+        function formatEquation(a1, b1, c1) {
             let equation = '';
 
-            // Si a es diferente de 0, mostramos el término "ax"
-            if (a !== 0) {
-                equation += `${a}x`;
+            // Formar el término con "a1x"
+            if (a1 !== 0) {
+                equation += `${a1}x`;
             } else {
-                equation += `0x`; // Aseguramos que haya "x" incluso si a es 0
+                equation += `0x`; // Aseguramos que haya "x" incluso si a1 es 0
             }
 
-            // Si b es positivo, mostramos "+ by", si es negativo, mostramos "- by"
-            if (b > 0) {
-                equation += ` + ${b}y`;
-            } else if (b < 0) {
-                equation += ` - ${Math.abs(b)}y`;
+            // Formar el término con "b1y", manejando el signo
+            if (b1 > 0) {
+                equation += ` + ${b1}y`;
+            } else if (b1 < 0) {
+                equation += ` - ${Math.abs(b1)}y`;
             } else {
-                equation += ` + 0y`; // Si b es 0, mostramos "0y"
+                equation += ` + 0y`; // Si b1 es 0, mostramos "0y"
             }
 
-            // Mostrar el término constante c, pero sin mostrar "+ 0"
-            if (c > 0) {
-                equation += ` + ${c}`;
-            } else if (c < 0) {
-                equation += ` - ${Math.abs(c)}`;
-            }
-
-            // Mostrar el término del lado derecho de la ecuación
-            if (d > 0) {
-                equation += ` = ${d}`;
-            } else if (d < 0) {
-                equation += ` = ${d}`; // Si d es negativo, se muestra como tal
+            // Mostrar el término constante c1
+            if (c1 > 0) {
+                equation += ` = ${c1}`;
+            } else if (c1 < 0) {
+                equation += ` = ${c1}`; // Si c1 es negativo, se muestra como tal
             } else {
-                equation += ` = 0`; // Si d es 0, mostramos "= 0"
+                equation += ` = 0`; // Si c1 es 0, mostramos "= 0"
             }
-
-            // Caso especial para que "1y" se muestre simplemente como "y" y "-1y" como "-y"
-            equation = equation.replace(/1y/g, "y").replace(/-1y/g, "-y");
 
             return equation;
         }
