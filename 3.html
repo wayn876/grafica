@@ -64,10 +64,11 @@
             c1 = getRandomInt(-10, 10);
 
             // Generar coeficientes para la segunda ecuación
+            // Asegurarse de que no sean ecuaciones proporcionales
             do {
                 a2 = getRandomInt(-10, 10);
                 b2 = getRandomInt(-10, 10);
-            } while (isProportional(a1, b1, a2, b2)); // Asegurarse de que no sean ecuaciones proporcionales
+            } while (isProportional(a1, b1, a2, b2)); // Asegurarse de que no sean ecuaciones paralelas
 
             // Generar el valor de c2 para que sea compatible con los coeficientes
             c2 = getRandomInt(-10, 10);
@@ -85,9 +86,10 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // Función para verificar si dos ecuaciones son proporcionales
+        // Función para verificar si dos ecuaciones son proporcionales (paralelas)
         function isProportional(a1, b1, a2, b2) {
-            return a1 * b2 === a2 * b1; // Si los coeficientes son proporcionales, las ecuaciones son paralelas
+            // Verificar si los coeficientes son proporcionales, si lo son, son paralelas
+            return a1 * b2 === a2 * b1;
         }
 
         // Función para formatear la ecuación de la forma "ax + by = c"
