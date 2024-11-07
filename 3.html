@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Ecuaciones Lineales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #equation {
+            font-size: 24px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Generador de Ecuaciones Lineales</h1>
+    <div id="equation">Haz clic en el botón para generar una ecuación</div>
+    <button onclick="generateEquation()">Generar Ecuación</button>
+
+    <script>
+        function generateEquation() {
+            // Generar coeficientes aleatorios para a, b y c entre -10 y 10
+            let a = getRandomInt(-10, 10);
+            let b = getRandomInt(-10, 10);
+            let c = getRandomInt(-10, 10);
+
+            // Crear la ecuación en formato ax + by = c
+            let equation = `${a}x + ${b}y = ${c}`;
+
+            // Si el coeficiente a es 0, cambiar la ecuación para no mostrar "0x"
+            if (a === 0) {
+                equation = `${b}y = ${c}`;
+            }
+
+            // Si el coeficiente b es 0, cambiar la ecuación para no mostrar "0y"
+            if (b === 0) {
+                equation = `${a}x = ${c}`;
+            }
+
+            // Mostrar la ecuación generada en la página
+            document.getElementById("equation").innerText = equation;
+        }
+
+        // Función para generar un número aleatorio en un rango
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+
+</body>
+</html>
