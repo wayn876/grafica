@@ -42,18 +42,27 @@
             let b = getRandomInt(-10, 10);
             let c = getRandomInt(-10, 10);
 
-            // Crear la ecuación en formato ax + by = c
-            let equation = `${a}x + ${b}y = ${c}`;
+            // Si a o b es cero, mostramos la incógnita correspondiente pero sin el término que sea cero
+            let equation = '';
 
-            // Si el coeficiente a es 0, cambiar la ecuación para no mostrar "0x"
-            if (a === 0) {
-                equation = `${b}y = ${c}`;
+            // Siempre incluir "x" y "y" en la ecuación, pero sin mostrar 0x o 0y
+            if (a !== 0) {
+                equation += `${a}x`;
+            } else {
+                equation += `0x`; // Aseguramos que haya "x" incluso si a es 0
             }
 
-            // Si el coeficiente b es 0, cambiar la ecuación para no mostrar "0y"
-            if (b === 0) {
-                equation = `${a}x = ${c}`;
+            // Si el coeficiente b no es cero, añadir el término con "y"
+            if (b > 0) {
+                equation += ` + ${b}y`;
+            } else if (b < 0) {
+                equation += ` - ${Math.abs(b)}y`;
+            } else {
+                equation += ` + 0y`; // Si b es 0, mostrar "0y"
             }
+
+            // Mostrar el resultado final de la ecuación
+            equation += ` = ${c}`;
 
             // Mostrar la ecuación generada en la página
             document.getElementById("equation").innerText = equation;
