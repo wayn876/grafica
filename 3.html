@@ -105,15 +105,19 @@
             }
 
             // Mostrar el término constante c
-            if (c !== 0) {
+            if (c > 0) {
                 equation += ` + ${c}`;
+            } else if (c < 0) {
+                equation += ` - ${Math.abs(c)}`;
             } else {
                 equation += ` + 0`; // Si c es 0, mostramos "0"
             }
 
             // Mostrar el término del lado derecho de la ecuación
-            if (d !== 0) {
+            if (d > 0) {
                 equation += ` = ${d}`;
+            } else if (d < 0) {
+                equation += ` = ${d}`; // Si d es negativo, se muestra como tal
             } else {
                 equation += ` = 0`; // Si d es 0, mostramos "= 0"
             }
