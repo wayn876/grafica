@@ -31,44 +31,33 @@
 </head>
 <body>
 
-    <h1>Generador de Ecuaciones Lineales Resolvibles</h1>
+    <h1>Generador de Ecuaciones Lineales (de la forma \( y = mx + b \))</h1>
     <div id="equation">Haz clic en el botón para generar una ecuación</div>
     <button onclick="generateEquation()">Generar Ecuación</button>
 
     <script>
         function generateEquation() {
-            let a, b, c;
+            let m, b;
 
-            // Generamos los coeficientes a y b asegurándonos de que al menos uno sea diferente de 0
-            do {
-                a = getRandomInt(-10, 10);
-                b = getRandomInt(-10, 10);
-            } while (a === 0 && b === 0); // Si ambos son cero, generamos nuevamente.
+            // Generar valores aleatorios para m y b
+            m = getRandomInt(-10, 10);  // Pendiente
+            b = getRandomInt(-10, 10);  // Intersección
 
-            // Generamos el valor de c, el cual puede ser cualquier número entero.
-            c = getRandomInt(-10, 10);
-
-            // Formamos la ecuación en formato "ax + by = c"
-            let equation = '';
-
-            // Siempre incluir "x" y "y" en la ecuación, pero sin mostrar 0x o 0y
-            if (a !== 0) {
-                equation += `${a}x`;
-            } else {
-                equation += `0x`; // Aseguramos que haya "x" incluso si a es 0
+            // Evitar m = 0, ya que eso generaría una ecuación de tipo "y = b"
+            // Si m = 0, le damos un valor no nulo a b para que siga siendo una ecuación válida.
+            if (m === 0) {
+                b = getRandomInt(1, 10); // Aseguramos que b no sea 0
             }
 
-            // Si el coeficiente b no es cero, añadir el término con "y"
+            // Crear la ecuación en formato "y = mx + b"
+            let equation = `y = ${m}x`;
+
+            // Si b es positivo, agregar el signo "+"
             if (b > 0) {
-                equation += ` + ${b}y`;
+                equation += ` + ${b}`;
             } else if (b < 0) {
-                equation += ` - ${Math.abs(b)}y`;
-            } else {
-                equation += ` + 0y`; // Si b es 0, mostrar "0y"
+                equation += ` - ${Math.abs(b)}`;
             }
-
-            // Mostrar el resultado final de la ecuación
-            equation += ` = ${c}`;
 
             // Mostrar la ecuación generada en la página
             document.getElementById("equation").innerText = equation;
